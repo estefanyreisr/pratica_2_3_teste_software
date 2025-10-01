@@ -48,6 +48,24 @@ class TestCase:
         finally:
             self.tear_down()
             
+        # --------- asserts (Seção 8) ----------
+    def assert_equal(self, first, second):
+        if first != second:
+            raise AssertionError(f"{first} != {second}")
+
+    def assert_true(self, expr):
+        if not expr:
+            raise AssertionError(f"{expr} is not true")
+
+    def assert_false(self, expr):
+        if expr:
+            raise AssertionError(f"{expr} is not false")
+
+    def assert_in(self, member, container):
+        if member not in container:
+            raise AssertionError(f"{member} not found in {container}")
+
+            
             
 class TestSuite:
     def __init__(self):
