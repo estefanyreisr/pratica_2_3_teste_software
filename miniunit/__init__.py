@@ -57,4 +57,28 @@ class TestSuite:
     def run(self, result: TestResult):
         for test in self.tests:
             test.run(result)
+            
+            
+class TestLoader:
+    TEST_METHOD_PREFIX = 'test'
+
+    def get_test_case_names(self, test_case_class):
+        methods = dir(test_case_class)
+        test_method_names = list(filter(lambda m: m.startswith(self.TEST_METHOD_PREFIX), methods))
+        return sorted([m for m in test_method_names if callable(getattr(test_case_class, m, None))])
+
+    def make_suite(self, test_case_class):
+        suite = TestSuite()
+        for name in self.get_test_case_names(test_case_class):
+            suite.add_test(test_case_class(name))
+        return suite
+
+
+class TestRunner:
+    def __init__(self):
+        self.result = TestResult()
+    def run(self, test):
+        test.run(self.result)
+        print(self.result.summary())
+        return self.result
 
